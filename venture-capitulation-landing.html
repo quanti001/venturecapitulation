@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venture Capitulation - Exposing Financial Markets</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+            cursor: crosshair;
+        }
+
+        /* Animated gradient background */
+        .gradient-bg {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 0, 0, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 0, 0, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(255, 255, 0, 0.1) 0%, transparent 50%);
+            animation: rotateGradient 20s linear infinite;
+            z-index: -3;
+        }
+
+        @keyframes rotateGradient {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Enhanced grid with perspective */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 0, 0, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 10s linear infinite;
+            transform: perspective(500px) rotateX(60deg);
+            transform-origin: center center;
+            z-index: -2;
+            opacity: 0.5;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        /* Enhanced matrix rain with varied speeds */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        .matrix-column {
+            position: absolute;
+            top: -100%;
+            font-size: 18px;
+            font-family: monospace;
+            background: linear-gradient(to bottom, 
+                rgba(255, 0, 0, 0) 0%,
+                rgba(255, 0, 0, 0.8) 50%,
+                rgba(255, 0, 0, 0) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: matrixFall linear infinite;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+            filter: blur(0.5px);
+        }
+
+        .matrix-column.fast { animation-duration: 3s; }
+        .matrix-column.medium { animation-duration: 5s; }
+        .matrix-column.slow { animation-duration: 8s; }
+
+        @keyframes matrixFall {
+            to { transform: translateY(200vh); }
+        }
+
+        /* Scanline effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                transparent 50%,
+                rgba(255, 0, 0, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 100;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+
+        /* Main container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Hero section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Enhanced glitchy title with 3D effect */
+        .title-wrapper {
+            position: relative;
+            perspective: 1000px;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: bold;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: textGlitch 3s infinite, float 6s ease-in-out infinite;
+            transform-style: preserve-3d;
+            text-shadow: 
+                0 0 10px rgba(255, 0, 0, 0.8),
+                0 0 20px rgba(255, 0, 0, 0.5),
+                0 0 30px rgba(255, 0, 0, 0.3);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
+            25% { transform: translateY(-10px) rotateX(2deg) rotateY(-2deg); }
+            75% { transform: translateY(5px) rotateX(-2deg) rotateY(2deg); }
+        }
+
+        .title::before,
+        .title::after {
+            content: 'VENTURE CAPITULATION';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .title::before {
+            animation: glitch1 0.3s infinite;
+            color: #ff0000;
+            z-index: -1;
+            mix-blend-mode: screen;
+        }
+
+        .title::after {
+            animation: glitch2 0.3s infinite reverse;
+            color: #00ff00;
+            z-index: -2;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes textGlitch {
+            0%, 100% { filter: brightness(1) contrast(1); }
+            50% { filter: brightness(1.2) contrast(1.5); }
+        }
+
+        @keyframes glitch1 {
+            0%, 100% { 
+                clip-path: inset(0 0 0 0); 
+                transform: translate(0);
+            }
+            20% { 
+                clip-path: inset(20% 0 30% 0); 
+                transform: translate(-3px, 2px) skew(2deg);
+            }
+            40% { 
+                clip-path: inset(50% 0 20% 0); 
+                transform: translate(3px, -2px) skew(-2deg);
+            }
+            60% { 
+                clip-path: inset(10% 0 60% 0); 
+                transform: translate(-2px, 1px);
+            }
+            80% { 
+                clip-path: inset(70% 0 10% 0); 
+                transform: translate(2px, -1px);
+            }
+        }
+
+        @keyframes glitch2 {
+            0%, 100% { 
+                clip-path: inset(0 0 0 0); 
+                transform: translate(0);
+            }
+            20% { 
+                clip-path: inset(60% 0 10% 0); 
+                transform: translate(2px, -1px) skew(-1deg);
+            }
+            40% { 
+                clip-path: inset(20% 0 50% 0); 
+                transform: translate(-2px, 1px) skew(1deg);
+            }
+            60% { 
+                clip-path: inset(30% 0 40% 0); 
+                transform: translate(1px, 2px);
+            }
+            80% { 
+                clip-path: inset(10% 0 70% 0); 
+                transform: translate(-1px, -2px);
+            }
+        }
+
+        /* Animated subtitle with typewriter effect */
+        .subtitle {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            opacity: 0.9;
+            overflow: hidden;
+            border-right: 3px solid #ff0000;
+            white-space: nowrap;
+            animation: typewriter 3s steps(40) 1s 1 normal both,
+                       blinkCursor 500ms steps(40) infinite normal;
+        }
+
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blinkCursor {
+            from { border-right-color: #ff0000; }
+            to { border-right-color: transparent; }
+        }
+
+        /* Enhanced stock ticker with multiple layers */
+        .stock-ticker {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 250px;
+            margin: 50px auto;
+            border: 2px solid #ff0000;
+            border-radius: 15px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(20, 0, 0, 0.95) 100%);
+            box-shadow: 
+                0 0 50px rgba(255, 0, 0, 0.4),
+                inset 0 0 50px rgba(255, 0, 0, 0.1);
+            transform: perspective(800px) rotateX(5deg);
+            transition: transform 0.3s ease;
+        }
+
+        .stock-ticker:hover {
+            transform: perspective(800px) rotateX(0deg) scale(1.05);
+            box-shadow: 
+                0 0 80px rgba(255, 0, 0, 0.6),
+                inset 0 0 50px rgba(255, 0, 0, 0.2);
+        }
+
+        /* Multiple chart layers */
+        .chart-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .chart-path-main {
+            stroke: #ff0000;
+            stroke-width: 3;
+            fill: none;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: drawChart 4s ease-out forwards infinite;
+            filter: drop-shadow(0 0 15px rgba(255, 0, 0, 1));
+            stroke-linecap: round;
+        }
+
+        .chart-path-shadow {
+            stroke: #ffff00;
+            stroke-width: 2;
+            fill: none;
+            opacity: 0.3;
+            animation: drawChart 4s ease-out 0.2s forwards infinite;
+        }
+
+        .chart-gradient {
+            fill: url(#chartGradient);
+            opacity: 0.2;
+            animation: pulseGradient 2s ease-in-out infinite;
+        }
+
+        @keyframes drawChart {
+            0% { 
+                stroke-dashoffset: 2000; 
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            50% { 
+                stroke-dashoffset: 0; 
+                stroke: #ff0000; 
+            }
+            75% { stroke: #ffff00; }
+            100% { 
+                stroke-dashoffset: -2000; 
+                stroke: #00ff00; 
+            }
+        }
+
+        @keyframes pulseGradient {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Animated scam alerts with better positioning */
+        .scam-alert {
+            position: absolute;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.2), rgba(255, 0, 0, 0.1));
+            border: 1px solid #ff0000;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0;
+            pointer-events: none;
+            backdrop-filter: blur(5px);
+            animation: floatAlert 8s infinite ease-in-out;
+        }
+
+        .scam-alert::before {
+            content: '⚠️ ';
+        }
+
+        @keyframes floatAlert {
+            0%, 100% { 
+                transform: translate(0, 0) scale(0.8) rotate(0deg); 
+                opacity: 0; 
+            }
+            10% { 
+                transform: translate(0, 0) scale(1) rotate(0deg); 
+                opacity: 0.8; 
+            }
+            50% { 
+                transform: translate(30px, -30px) scale(1.1) rotate(5deg); 
+                opacity: 0.9; 
+            }
+            90% { 
+                transform: translate(-20px, 20px) scale(1) rotate(-3deg); 
+                opacity: 0.8; 
+            }
+        }
+
+        /* Enhanced warning badge with neon effect */
+        .warning-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff0000, #ff4444, #ff0000);
+            background-size: 200% 200%;
+            padding: 15px 40px;
+            margin-top: 40px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite, gradientShift 3s ease infinite;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .warning-badge::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .warning-badge:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .warning-badge:hover {
+            transform: scale(1.15) translateY(-5px);
+            box-shadow: 
+                0 10px 40px rgba(255, 0, 0, 0.8),
+                0 0 80px rgba(255, 0, 0, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 20px rgba(255, 0, 0, 0.5),
+                    0 0 40px rgba(255, 0, 0, 0.3);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 40px rgba(255, 0, 0, 0.8),
+                    0 0 80px rgba(255, 0, 0, 0.5),
+                    0 0 120px rgba(255, 0, 0, 0.3);
+            }
+        }
+
+        /* Live indicator */
+        .live-indicator {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            border-radius: 25px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: #ff0000;
+            border-radius: 50%;
+            animation: livePulse 1.5s infinite;
+        }
+
+        @keyframes livePulse {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+            }
+            50% { 
+                transform: scale(1.5); 
+                box-shadow: 0 0 20px rgba(255, 0, 0, 1);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0;
+            animation: particleFloat 10s infinite linear;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Mouse trail effect */
+        .trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.8) 0%, transparent 70%);
+            pointer-events: none;
+            animation: fadeOut 1s forwards;
+            z-index: 9999;
+        }
+
+        @keyframes fadeOut {
+            to {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title { font-size: 2.5rem; }
+            .subtitle { font-size: 1rem; }
+            .stock-ticker { 
+                height: 180px;
+                transform: none;
+            }
+            .stock-ticker:hover {
+                transform: scale(1.02);
+            }
+            .live-indicator {
+                top: 10px;
+                right: 10px;
+                padding: 5px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg"></div>
+    <div class="grid-bg"></div>
+    <div class="matrix-rain" id="matrixRain"></div>
+    <div class="scanlines"></div>
+    
+    <div class="container">
+        <div class="live-indicator">
+            <div class="live-dot"></div>
+            <span>LIVE TRADING HOURS</span>
+        </div>
+
+        <div class="hero">
+            <div class="title-wrapper">
+                <h1 class="title">VENTURE CAPITULATION</h1>
+            </div>
+            <p class="subtitle">Exposing the Dark Side of Financial Markets</p>
+            
+            <div class="stock-ticker" id="stockTicker">
+                <svg class="chart-layer" viewBox="0 0 700 250">
+                    <defs>
+                        <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ff0000;stop-opacity:0.5" />
+                            <stop offset="100%" style="stop-color:#000000;stop-opacity:0" />
+                        </linearGradient>
+                    </defs>
+                    <path class="chart-gradient" d=""></path>
+                    <path class="chart-path-shadow" d=""></path>
+                    <path class="chart-path-main" d=""></path>
+                </svg>
+                <div class="scam-alert" style="top: 20px; left: 50px;">PUMP & DUMP</div>
+                <div class="scam-alert" style="bottom: 30px; right: 50px; animation-delay: 2.5s;">SHORT SQUEEZE</div>
+                <div class="scam-alert" style="top: 50px; right: 100px; animation-delay: 5s;">RUG PULL</div>
+                <div class="scam-alert" style="bottom: 60px; left: 100px; animation-delay: 7s;">WASH TRADING</div>
+            </div>
+            
+            <div class="warning-badge">
+                <span>🚨 FIRST EPISODE DROPPING SOON</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced matrix rain with financial data
+        function createMatrixRain() {
+            const matrixContainer = document.getElementById('matrixRain');
+            const columns = Math.floor(window.innerWidth / 40);
+            
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                
+                // Vary speeds
+                const speeds = ['fast', 'medium', 'slow'];
+                column.classList.add(speeds[Math.floor(Math.random() * speeds.length)]);
+                
+                column.style.left = i * 40 + Math.random() * 20 + 'px';
+                column.style.animationDelay = Math.random() * 5 + 's';
+                
+                // Enhanced financial symbols
+                const symbols = ['$', '%', '€', '¥', '£', '₿', '📈', '📉', '💰', '⚠️', '▼', '▲'];
+                const content = [];
+                for (let j = 0; j < 40; j++) {
+                    if (Math.random() > 0.6) {
+                        content.push(symbols[Math.floor(Math.random() * symbols.length)]);
+                    } else {
+                        content.push(Math.floor(Math.random() * 10));
+                    }
+                }
+                column.textContent = content.join('\n');
+                
+                matrixContainer.appendChild(column);
+            }
+        }
+
+        // Dynamic multi-layer chart animation
+        function animateChart() {
+            const paths = document.querySelectorAll('.chart-path-main, .chart-path-shadow');
+            const gradientPath = document.querySelector('.chart-gradient');
+            
+            function generatePath() {
+                const points = [];
+                const numPoints = 20;
+                
+                for (let i = 0; i <= numPoints; i++) {
+                    const x = (i / numPoints) * 700;
+                    const baseY = 125;
+                    const variance = 60;
+                    const trend = Math.sin(i * 0.3) * 20;
+                    const noise = (Math.random() - 0.5) * variance;
+                    const y = baseY + trend + noise;
+                    points.push({ x, y });
+                }
+                
+                // Create smooth path
+                let d = `M ${points[0].x},${points[0].y}`;
+                
+                for (let i = 1; i < points.length; i++) {
+                    const cp1x = points[i - 1].x + (points[i].x - points[i - 1].x) / 3;
+                    const cp1y = points[i - 1].y;
+                    const cp2x = points[i - 1].x + 2 * (points[i].x - points[i - 1].x) / 3;
+                    const cp2y = points[i].y;
+                    d += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${points[i].x},${points[i].y}`;
+                }
+                
+                // Create filled area path
+                const gradientD = d + ` L 700,250 L 0,250 Z`;
+                
+                return { line: d, area: gradientD };
+            }
+            
+            function updateChart() {
+                const pathData = generatePath();
+                paths.forEach(path => {
+                    path.setAttribute('d', pathData.line);
+                });
+                gradientPath.setAttribute('d', pathData.area);
+            }
+            
+            updateChart();
+            setInterval(updateChart, 4000);
+        }
+
+        // Create floating particles
+        function createParticles() {
+            setInterval(() => {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.innerHTML = ['$', '₿', '%', '📊'][Math.floor(Math.random() * 4)];
+                particle.style.left = Math.random() * window.innerWidth + 'px';
+                particle.style.fontSize = Math.random() * 20 + 10 + 'px';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                particle.style.animationDuration = Math.random() * 5 + 10 + 's';
+                particle.style.color = `rgba(255, ${Math.random() * 100}, 0, 0.8)`;
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 15000);
+            }, 3000);
+        }
+
+        // Mouse trail effect
+        let mouseX = 0, mouseY = 0;
+        let trailElements = [];
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            if (Math.random() > 0.9) {
+                const trail = document.createElement('div');
+                trail.className = 'trail';
+                trail.style.left = mouseX + 'px';
+                trail.style.top = mouseY + 'px';
+                document.body.appendChild(trail);
+                
+                setTimeout(() => trail.remove(), 1000);
+            }
+        });
+
+        // Interactive glitch on title click
+        const title = document.querySelector('.title');
+        title.addEventListener('click', function() {
+            this.style.animation = 'none';
+            document.body.style.filter = 'invert(1)';
+            
+            setTimeout(() => {
+                this.style.animation = 'textGlitch 3s infinite, float 6s ease-in-out infinite';
+                document.body.style.filter = 'none';
+            }, 100);
+        });
+
+        // Parallax effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            
+            document.querySelector('.grid-bg').style.transform = 
+                `perspective(500px) rotateX(${60 + y}deg) translateX(${x}px)`;
+        });
+
+        // Initialize all animations
+        createMatrixRain();
+        animateChart();
+        createParticles();
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            const matrixContainer = document.getElementById('matrixRain');
+            matrixContainer.innerHTML = '';
+            createMatrixRain();
+        });
+
+        // Add keyboard interaction
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 's' || e.key === 'S') {
+                // Trigger scam alert animation
+                document.querySelectorAll('.scam-alert').forEach((alert, i) => {
+                    alert.style.animation = 'none';
+                    setTimeout(() => {
+                        alert.style.animation = `floatAlert 8s ${i * 0.5}s infinite ease-in-out`;
+                    }, 10);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
